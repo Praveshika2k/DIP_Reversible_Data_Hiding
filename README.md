@@ -1,4 +1,4 @@
-# 🔐 Reversible Data Hiding with Adaptive QR Code Embedding and Perfect Recovery
+# 🔐 Reversible Data Hiding with Adaptive QR Code Embedding
 
 ## 📘 Abstract
 This project presents an advanced *Reversible Data Hiding (RDH)* system integrated with *Quick Response (QR)* codes for secure and reversible information embedding in digital images. The proposed approach intelligently analyzes image complexity to adaptively select embedding regions, ensuring minimal distortion and perfect recovery. A visible QR code is embedded into the image corner while the displaced pixel data are securely hidden within low-complexity regions of the image. When decoded, the QR code can be scanned to access linked information, and the original image can be fully reconstructed without any loss. The system achieves high imperceptibility, strong reversibility, and increased embedding capacity using adaptive bit allocation and local texture analysis.
