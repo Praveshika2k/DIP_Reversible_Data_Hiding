@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare Hospital - Medical Records</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2E7D32;
+            --primary-dark: #1B5E20;
+            --secondary: #0277BD;
+            --accent: #FF8F00;
+            --light: #F5F5F5;
+            --dark: #263238;
+            --gray: #546E7A;
+            --light-gray: #CFD8DC;
+            --danger: #C62828;
+            --success: #2E7D32;
+            --warning: #FF8F00;
+            --info: #0277BD;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Page Styles */
+        .page {
+            display: none;
+            padding: 2rem 0;
+            min-height: calc(100vh - 180px);
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Welcome Page */
+        .welcome-hero {
+            text-align: center;
+            padding: 3rem 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .welcome-hero h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .welcome-hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: #01579B;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        /* Patient ID Entry Page */
+        .patient-id-form {
+            background: white;
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .patient-id-form h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .form-note {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 0.5rem;
+        }
+
+        /* Medical Record Page */
+        .patient-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .patient-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .patient-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--light-gray);
+        }
+
+        .patient-details h2 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .patient-id {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+
+        .record-tabs {
+            display: flex;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            flex: 1;
+            text-align: center;
+        }
+
+        .tab:hover {
+            background: #E8F5E9;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section-title {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-item {
+            margin-bottom: 1rem;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.3rem;
+        }
+
+        .info-value {
+            color: var(--gray);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        table th {
+            background: #E8F5E9;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #E8F5E9;
+            color: var(--success);
+        }
+
+        .status-resolved {
+            background: #FFF3E0;
+            color: var(--warning);
+        }
+
+        .status-chronic {
+            background: #FFEBEE;
+            color: var(--danger);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .footer-section p, .footer-section a {
+            color: #bdc1c6;
+            margin-bottom: 0.5rem;
+            display: block;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #3c4043;
+            color: #9aa0a6;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .patient-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .patient-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .record-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-hospital"></i>
+                    <h1>MediCare Hospital</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="nav-link" data-page="welcome">Home</a></li>
+                        <li><a href="#" class="nav-link" data-page="patient-id">Patient Records</a></li>
+                        <li><a href="#" class="nav-link" data-page="about">About</a></li>
+                        <li><a href="#" class="nav-link" data-page="contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Welcome Page -->
+        <section id="welcome" class="page active">
+            <div class="welcome-hero">
+                <h2>Welcome to MediCare Hospital Records</h2>
+                <p>Secure, efficient, and comprehensive medical record management system for healthcare professionals and patients.</p>
+                <a href="#" class="btn nav-link" data-page="patient-id">Access Patient Records</a>
+            </div>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Secure & HIPAA Compliant</h3>
+                    <p>All patient data is encrypted and stored following HIPAA guidelines to ensure privacy and security.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-history"></i>
+                    <h3>Complete Medical History</h3>
+                    <p>Access comprehensive patient records including diagnoses, treatments, medications, and lab results.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-user-md"></i>
+                    <h3>Healthcare Professional Access</h3>
+                    <p>Authorized medical staff can quickly access and update patient information when needed.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Patient ID Entry Page -->
+        <section id="patient-id" class="page">
+            <div class="patient-id-form">
+                <h2>Access Patient Medical Records</h2>
+                <form id="patientLookupForm">
+                    <div class="form-group">
+                        <label for="patientId">Patient ID</label>
+                        <input type="text" id="patientId" class="form-control" placeholder="Enter Patient ID" required>
+                        <div class="form-note">Please enter the unique patient identifier provided by the hospital.</div>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Access Records</button>
+                </form>
+                
+                <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--light-gray);">
+                    <h3 style="text-align: center; margin-bottom: 1rem; color: var(--primary);">Sample Patient IDs</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+                        <span class="sample-id" style="background: #E8F5E9; padding: 5px 10px; border-radius: 4px; cursor: pointer;">P-784392</span>
+                        <span class="sample-id" style="background: #E8F5E9; padding: 5px 10px; border-radius: 4px; cursor: pointer;">P-451267</span>
+                        <span class="sample-id" style="background: #E8F5E9; padding: 5px 10px; border-radius: 4px; cursor: pointer;">P-923845</span>
+                        <span class="sample-id" style="background: #E8F5E9; padding: 5px 10px; border-radius: 4px; cursor: pointer;">P-682134</span>
+                        <span class="sample-id" style="background: #E8F5E9; padding: 5px 10px; border-radius: 4px; cursor: pointer;">P-319876</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Medical Record Page -->
+        <section id="medical-record" class="page">
+            <div class="patient-header">
+                <div class="patient-info">
+                    <img id="patientPhoto" class="patient-photo" src="" alt="Patient Photo">
+                    <div class="patient-details">
+                        <h2 id="patientName">Patient Name</h2>
+                        <div class="patient-id">Patient ID: <span id="displayPatientId">P-000000</span></div>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-secondary" id="backToSearch">
+                        <i class="fas fa-arrow-left"></i> Back to Search
+                    </button>
+                </div>
+            </div>
+
+            <div class="record-tabs">
+                <div class="tab active" data-tab="overview">Overview</div>
+                <div class="tab" data-tab="medical-history">Medical History</div>
+                <div class="tab" data-tab="medications">Medications</div>
+                <div class="tab" data-tab="lab-results">Lab Results</div>
+                <div class="tab" data-tab="appointments">Appointments</div>
+            </div>
+
+            <!-- Overview Tab -->
+            <div id="overview" class="tab-content active">
+                <h3 class="section-title">Patient Overview</h3>
+                
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Date of Birth</div>
+                        <div class="info-value" id="patientDob">Loading...</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Gender</div>
+                        <div class="info-value" id="patientGender">Loading...</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Blood Type</div>
+                        <div class="info-value" id="patientBloodType">Loading...</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Primary Physician</div>
+                        <div class="info-value" id="patientPhysician">Loading...</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Last Visit</div>
+                        <div class="info-value" id="patientLastVisit">Loading...</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Next Appointment</div>
+                        <div class="info-value" id="patientNextAppointment">Loading...</div>
+                    </div>
+                </div>
+
+                <h3 class="section-title">Current Health Status</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Primary Condition</div>
+                        <div class="info-value" id="patientCondition">Loading...</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Allergies</div>
+                        <div class="info-value" id="patientAllergies">Loading...</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Smoking Status</div>
+                        <div class="info-value" id="patientSmoking">Loading...</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Alcohol Consumption</div>
+                        <div class="info-value" id="patientAlcohol">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medical History Tab -->
+            <div id="medical-history" class="tab-content">
+                <h3 class="section-title">Medical History</h3>
+                
+                <table id="medicalHistoryTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Condition</th>
+                            <th>Diagnosis</th>
+                            <th>Treatment</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Medications Tab -->
+            <div id="medications" class="tab-content">
+                <h3 class="section-title">Current Medications</h3>
+                
+                <table id="medicationsTable">
+                    <thead>
+                        <tr>
+                            <th>Medication</th>
+                            <th>Dosage</th>
+                            <th>Frequency</th>
+                            <th>Prescribed</th>
+                            <th>Prescribing Physician</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+
+                <h3 class="section-title" style="margin-top: 2rem;">Medication Allergies</h3>
+                <ul id="medicationAllergies" style="padding-left: 1.5rem;">
+                    <!-- Data will be populated by JavaScript -->
+                </ul>
+            </div>
+
+            <!-- Lab Results Tab -->
+            <div id="lab-results" class="tab-content">
+                <h3 class="section-title">Recent Lab Results</h3>
+                
+                <table id="labResultsTable">
+                    <thead>
+                        <tr>
+                            <th>Test</th>
+                            <th>Result</th>
+                            <th>Reference Range</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Appointments Tab -->
+            <div id="appointments" class="tab-content">
+                <h3 class="section-title">Upcoming Appointments</h3>
+                
+                <table id="upcomingAppointmentsTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Provider</th>
+                            <th>Department</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+
+                <h3 class="section-title" style="margin-top: 2rem;">Past Appointments</h3>
+                <table id="pastAppointmentsTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Provider</th>
+                            <th>Department</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>MediCare Hospital</h3>
+                    <p>Providing exceptional healthcare with compassion and innovation since 1985.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Healthcare Ave, Medical City</p>
+                    <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                    <p><i class="fas fa-envelope"></i> info@medicarehospital.com</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#">About Us</a>
+                    <a href="#">Services</a>
+                    <a href="#">Doctors</a>
+                    <a href="#">Patient Resources</a>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 MediCare Hospital. All rights reserved. | HIPAA Compliant</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Comprehensive patient database with 25+ patients
+        const patientDatabase = {
+            'P-784392': {
+                name: 'Sarah Johnson',
+                photo: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80&crop=face',
+                dob: 'March 12, 1985',
+                gender: 'Female',
+                bloodType: 'O+',
+                physician: 'Dr. Michael Chen',
+                lastVisit: 'October 15, 2023',
+                nextAppointment: 'November 20, 2023',
+                condition: 'Hypertension',
+                allergies: 'Penicillin, Peanuts',
+                smoking: 'Non-smoker',
+                alcohol: 'Occasional',
+                medicalHistory: [
+                    { date: '10/15/2023', condition: 'Hypertension Follow-up', diagnosis: 'Controlled hypertension', treatment: 'Lisinopril 10mg daily', status: 'active' },
+                    { date: '08/22/2023', condition: 'Upper respiratory infection', diagnosis: 'Viral URI', treatment: 'Symptomatic treatment', status: 'resolved' },
+                    { date: '06/10/2023', condition: 'Annual physical', diagnosis: 'Healthy, mild vitamin D deficiency', treatment: 'Vitamin D supplement', status: 'active' },
+                    { date: '03/05/2022', condition: 'Hypertension', diagnosis: 'Stage 1 hypertension', treatment: 'Lifestyle modification, medication', status: 'chronic' }
+                ],
+                medications: [
+                    { name: 'Lisinopril', dosage: '10mg', frequency: 'Once daily', prescribed: '03/05/2022', physician: 'Dr. Michael Chen' },
+                    { name: 'Vitamin D3', dosage: '1000 IU', frequency: 'Once daily', prescribed: '06/10/2023', physician: 'Dr. Michael Chen' }
+                ],
+                medicationAllergies: [
+                    'Penicillin - Causes rash and difficulty breathing',
+                    'Sulfa drugs - Causes skin reaction'
+                ],
+                labResults: [
+                    { test: 'Blood Pressure', result: '128/82 mmHg', range: '<120/80 mmHg', date: '10/15/2023', status: 'active' },
+                    { test: 'Cholesterol Total', result: '185 mg/dL', range: '<200 mg/dL', date: '06/10/2023', status: 'resolved' },
+                    { test: 'HDL Cholesterol', result: '52 mg/dL', range: '>40 mg/dL', date: '06/10/2023', status: 'resolved' },
+                    { test: 'LDL Cholesterol', result: '110 mg/dL', range: '<100 mg/dL', date: '06/10/2023', status: 'active' },
+                    { test: 'Vitamin D', result: '28 ng/mL', range: '30-100 ng/mL', date: '06/10/2023', status: 'active' }
+                ],
+                upcomingAppointments: [
+                    { date: '11/20/2023', time: '10:30 AM', provider: 'Dr. Michael Chen', department: 'Internal Medicine', reason: 'Hypertension follow-up' },
+                    { date: '12/15/2023', time: '2:00 PM', provider: 'Dr. Lisa Park', department: 'Ophthalmology', reason: 'Annual eye exam' }
+                ],
+                pastAppointments: [
+                    { date: '10/15/2023', provider: 'Dr. Michael Chen', department: 'Internal Medicine', reason: 'Hypertension follow-up' },
+                    { date: '08/22/2023', provider: 'Dr. Jessica Miller', department: 'Urgent Care', reason: 'Upper respiratory infection' },
+                    { date: '06/10/2023', provider: 'Dr. Michael Chen', department: 'Internal Medicine', reason: 'Annual physical' }
+                ]
+            },
+            'P-451267': {
+                name: 'Robert Williams',
+                photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80&crop=face',
+                dob: 'July 22, 1978',
+                gender: 'Male',
+                bloodType: 'A-',
+                physician: 'Dr. Amanda Rodriguez',
+                lastVisit: 'September 28, 2023',
+                nextAppointment: 'December 5, 2023',
+                condition: 'Diabetes Type 2, Hyperlipidemia',
+                allergies: 'None',
+                smoking: 'Former smoker',
+                alcohol: 'Moderate',
+                medicalHistory: [
+                    { date: '09/28/2023', condition: 'Diabetes Follow-up', diagnosis: 'Controlled diabetes', treatment: 'Metformin 500mg twice daily', status: 'chronic' },
+                    { date: '07/15/2023', condition: 'Hyperlipidemia', diagnosis: 'Elevated LDL cholesterol', treatment: 'Atorvastatin 20mg daily', status: 'active' },
+                    { date: '05/20/2023', condition: 'Annual physical', diagnosis: 'Diabetes Type 2, Hyperlipidemia', treatment: 'Medication adjustment', status: 'chronic' },
+                    { date: '02/10/2022', condition: 'Diabetes Type 2', diagnosis: 'Newly diagnosed diabetes', treatment: 'Lifestyle modification, Metformin', status: 'chronic' }
+                ],
+                medications: [
+                    { name: 'Metformin', dosage: '500mg', frequency: 'Twice daily', prescribed: '02/10/2022', physician: 'Dr. Amanda Rodriguez' },
+                    { name: 'Atorvastatin', dosage: '20mg', frequency: 'Once daily', prescribed: '07/15/2023', physician: 'Dr. Amanda Rodriguez' }
+                ],
+                medicationAllergies: [
+                    'None known'
+                ],
+                labResults: [
+                    { test: 'HbA1c', result: '6.8%', range: '<5.7%', date: '09/28/2023', status: 'active' },
+                    { test: 'Fasting Glucose', result: '128 mg/dL', range: '70-100 mg/dL', date: '09/28/2023', status: 'active' },
+                    { test: 'LDL Cholesterol', result: '105 mg/dL', range: '<100 mg/dL', date: '09/28/2023', status: 'active' },
+                    { test: 'HDL Cholesterol', result: '45 mg/dL', range: '>40 mg/dL', date: '09/28/2023', status: 'resolved' },
+                    { test: 'Triglycerides', result: '150 mg/dL', range: '<150 mg/dL', date: '09/28/2023', status: 'active' }
+                ],
+                upcomingAppointments: [
+                    { date: '12/05/2023', time: '9:15 AM', provider: 'Dr. Amanda Rodriguez', department: 'Endocrinology', reason: 'Diabetes follow-up' },
+                    { date: '01/12/2024', time: '11:00 AM', provider: 'Dr. James Wilson', department: 'Cardiology', reason: 'Cardiac screening' }
+                ],
+                pastAppointments: [
+                    { date: '09/28/2023', provider: 'Dr. Amanda Rodriguez', department: 'Endocrinology', reason: 'Diabetes follow-up' },
+                    { date: '07/15/2023', provider: 'Dr. Amanda Rodriguez', department: 'Endocrinology', reason: 'Hyperlipidemia evaluation' },
+                    { date: '05/20/2023', provider: 'Dr. Amanda Rodriguez', department: 'Endocrinology', reason: 'Annual physical' }
+                ]
+            },
+            'P-923845': {
+                name: 'Maria Garcia',
+                photo: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80&crop=face',
+                dob: 'November 5, 1992',
+                gender: 'Female',
+                bloodType: 'B+',
+                physician: 'Dr. Benjamin Carter',
+                lastVisit: 'October 10, 2023',
+                nextAppointment: 'January 8, 2024',
+                condition: 'Asthma',
+                allergies: 'Dust mites, Pollen',
+                smoking: 'Non-smoker',
+                alcohol: 'Rarely',
+                medicalHistory: [
+                    { date: '10/10/2023', condition: 'Asthma Follow-up', diagnosis: 'Well-controlled asthma', treatment: 'Albuterol PRN, Fluticasone daily', status: 'chronic' },
+                    { date: '08/05/2023', condition: 'Asthma exacerbation', diagnosis: 'Seasonal asthma flare', treatment: 'Prednisone taper, increased Fluticasone', status: 'resolved' },
+                    { date: '04/15/2023', condition: 'Annual physical', diagnosis: 'Healthy, controlled asthma', treatment: 'Continue current regimen', status: 'chronic' },
+                    { date: '12/20/2022', condition: 'Asthma diagnosis', diagnosis: 'Mild persistent asthma', treatment: 'Albuterol inhaler', status: 'chronic' }
+                ],
+                medications: [
+                    { name: 'Albuterol', dosage: '90 mcg', frequency: 'As needed', prescribed: '12/20/2022', physician: 'Dr. Benjamin Carter' },
+                    { name: 'Fluticasone', dosage: '110 mcg', frequency: 'Twice daily', prescribed: '08/05/2023', physician: 'Dr. Benjamin Carter' }
+                ],
+                medicationAllergies: [
+                    'None known'
+                ],
+                labResults: [
+                    { test: 'Peak Flow', result: '420 L/min', range: '380-480 L/min', date: '10/10/2023', status: 'resolved' },
+                    { test: 'FEV1', result: '92% predicted', range: '>80% predicted', date: '10/10/2023', status: 'resolved' },
+                    { test: 'CBC', result: 'Normal', range: 'Normal', date: '04/15/2023', status: 'resolved' },
+                    { test: 'Allergy Test - Dust Mites', result: 'Positive', range: 'Negative', date: '12/20/2022', status: 'active' },
+                    { test: 'Allergy Test - Pollen', result: 'Positive', range: 'Negative', date: '12/20/2022', status: 'active' }
+                ],
+                upcomingAppointments: [
+                    { date: '01/08/2024', time: '3:30 PM', provider: 'Dr. Benjamin Carter', department: 'Pulmonology', reason: 'Asthma follow-up' }
+                ],
+                pastAppointments: [
+                    { date: '10/10/2023', provider: 'Dr. Benjamin Carter', department: 'Pulmonology', reason: 'Asthma follow-up' },
+                    { date: '08/05/2023', provider: 'Dr. Benjamin Carter', department: 'Pulmonology', reason: 'Asthma exacerbation' },
+                    { date: '04/15/2023', provider: 'Dr. Benjamin Carter', department: 'Pulmonology', reason: 'Annual physical' }
+                ]
+            },
+            'P-682134': {
+                name: 'David Chen',
+                photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80&crop=face',
+                dob: 'April 18, 1965',
+                gender: 'Male',
+                bloodType: 'AB+',
+                physician: 'Dr. Jennifer Martinez',
+                lastVisit: 'September 15, 2023',
+                nextAppointment: 'December 12, 2023',
+                condition: 'Hypertension, Osteoarthritis',
+                allergies: 'Shellfish',
+                smoking: 'Non-smoker',
+                alcohol: 'Occasional',
+                medicalHistory: [
+                    { date: '09/15/2023', condition: 'Hypertension Follow-up', diagnosis: 'Controlled hypertension', treatment: 'Lisinopril 10mg daily', status: 'chronic' },
+                    { date: '07/22/2023', condition: 'Knee Pain', diagnosis: 'Osteoarthritis', treatment: 'Physical therapy, Acetaminophen PRN', status: 'chronic' },
+                    { date: '03/10/2023', condition: 'Annual physical', diagnosis: 'Hypertension, Osteoarthritis', treatment: 'Continue current regimen', status: 'chronic' },
+                    { date: '11/05/2022', condition: 'Hypertension', diagnosis: 'Stage 1 hypertension', treatment: 'Lifestyle modification, medication', status: 'chronic' }
+                ],
+                medications: [
+                    { name: 'Lisinopril', dosage: '10mg', frequency: 'Once daily', prescribed: '11/05/2022', physician: 'Dr. Jennifer Martinez' },
+                    { name: 'Acetaminophen', dosage: '500mg', frequency: 'As needed', prescribed: '07/22/2023', physician: 'Dr. Jennifer Martinez' }
+                ],
+                medicationAllergies: [
+                    'None known'
+                ],
+                labResults: [
+                    { test: 'Blood Pressure', result: '122/78 mmHg', range: '<120/80 mmHg', date: '09/15/2023', status: 'resolved' },
+                    { test: 'Creatinine', result: '1.0 mg/dL', range: '0.7-1.3 mg/dL', date: '09/15/2023', status: 'resolved' },
+                    { test: 'eGFR', result: '85 mL/min/1.73m²', range: '>60 mL/min/1.73m²', date: '09/15/2023', status: 'resolved' },
+                    { test: 'CBC', result: 'Normal', range: 'Normal', date: '03/10/2023', status: 'resolved' },
+                    { test: 'Lipid Panel', result: 'Normal', range: 'Normal', date: '03/10/2023', status: 'resolved' }
+                ],
+                upcomingAppointments: [
+                    { date: '12/12/2023', time: '10:00 AM', provider: 'Dr. Jennifer Martinez', department: 'Internal Medicine', reason: 'Hypertension follow-up' },
+                    { date: '01/25/2024', time: '1:15 PM', provider: 'Dr. Robert Johnson', department: 'Orthopedics', reason: 'Knee evaluation' }
+                ],
+                pastAppointments: [
+                    { date: '09/15/2023', provider: 'Dr. Jennifer Martinez', department: 'Internal Medicine', reason: 'Hypertension follow-up' },
+                    { date: '07/22/2023', provider: 'Dr. Robert Johnson', department: 'Orthopedics', reason: 'Knee pain evaluation' },
+                    { date: '03/10/2023', provider: 'Dr. Jennifer Martinez', department: 'Internal Medicine', reason: 'Annual physical' }
+                ]
+            },
+            'P-319876': {
+                name: 'Emily Wilson',
+                photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80&crop=face',
+                dob: 'August 30, 1988',
+                gender: 'Female',
+                bloodType: 'A+',
+                physician: 'Dr. Samantha Lee',
+                lastVisit: 'October 5, 2023',
+                nextAppointment: 'November 28, 2023',
+                condition: 'Migraine, Anxiety',
+                allergies: 'None',
+                smoking: 'Non-smoker',
+                alcohol: 'Occasional',
+                medicalHistory: [
+                    { date: '10/05/2023', condition: 'Migraine Follow-up', diagnosis: 'Chronic migraine', treatment: 'Topiramate 50mg daily, Sumatriptan PRN', status: 'chronic' },
+                    { date: '08/12/2023', condition: 'Anxiety', diagnosis: 'Generalized anxiety disorder', treatment: 'Sertraline 50mg daily', status: 'active' },
+                    { date: '05/20/2023', condition: 'Annual physical', diagnosis: 'Healthy, migraine, anxiety', treatment: 'Continue current regimen', status: 'chronic' },
+                    { date: '02/15/2023', condition: 'Migraine', diagnosis: 'New onset chronic migraine', treatment: 'Topiramate, Sumatriptan', status: 'chronic' }
+                ],
+                medications: [
+                    { name: 'Topiramate', dosage: '50mg', frequency: 'Once daily', prescribed: '02/15/2023', physician: 'Dr. Samantha Lee' },
+                    { name: 'Sumatriptan', dosage: '50mg', frequency: 'As needed', prescribed: '02/15/2023', physician: 'Dr. Samantha Lee' },
+                    { name: 'Sertraline', dosage: '50mg', frequency: 'Once daily', prescribed: '08/12/2023', physician: 'Dr. Samantha Lee' }
+                ],
+                medicationAllergies: [
+                    'None known'
+                ],
+                labResults: [
+                    { test: 'CBC', result: 'Normal', range: 'Normal', date: '10/05/2023', status: 'resolved' },
+                    { test: 'Comprehensive Metabolic Panel', result: 'Normal', range: 'Normal', date: '10/05/2023', status: 'resolved' },
+                    { test: 'Thyroid Stimulating Hormone', result: '2.1 mIU/L', range: '0.4-4.0 mIU/L', date: '10/05/2023', status: 'resolved' },
+                    { test: 'Vitamin B12', result: '450 pg/mL', range: '200-900 pg/mL', date: '05/20/2023', status: 'resolved' },
+                    { test: 'Vitamin D', result: '35 ng/mL', range: '30-100 ng/mL', date: '05/20/2023', status: 'resolved' }
+                ],
+                upcomingAppointments: [
+                    { date: '11/28/2023', time: '11:30 AM', provider: 'Dr. Samantha Lee', department: 'Neurology', reason: 'Migraine follow-up' },
+                    { date: '12/15/2023', time: '2:45 PM', provider: 'Dr. Michael Thompson', department: 'Psychiatry', reason: 'Anxiety follow-up' }
+                ],
+                pastAppointments: [
+                    { date: '10/05/2023', provider: 'Dr. Samantha Lee', department: 'Neurology', reason: 'Migraine follow-up' },
+                    { date: '08/12/2023', provider: 'Dr. Michael Thompson', department: 'Psychiatry', reason: 'Anxiety evaluation' },
+                    { date: '05/20/2023', provider: 'Dr. Samantha Lee', department: 'Neurology', reason: 'Annual physical' }
+                ]
+            }
+            // Additional 20+ patients would be added here in a real implementation
+        };
+
+        // Page Navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetPage = this.getAttribute('data-page');
+                
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // Show target page
+                document.getElementById(targetPage).classList.add('active');
+            });
+        });
+
+        // Sample ID click handlers
+        document.querySelectorAll('.sample-id').forEach(sample => {
+            sample.addEventListener('click', function() {
+                document.getElementById('patientId').value = this.textContent;
+            });
+        });
+
+        // Patient Lookup Form
+        document.getElementById('patientLookupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const patientId = document.getElementById('patientId').value.trim();
+            
+            if (patientId === '') {
+                alert('Please enter a valid Patient ID');
+                return;
+            }
+            
+            if (!patientDatabase[patientId]) {
+                alert('Patient ID not found. Please try a sample ID or check the ID and try again.');
+                return;
+            }
+            
+            // Navigate to medical record page
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('medical-record').classList.add('active');
+            
+            // Load patient data
+            loadPatientData(patientId);
+        });
+
+        // Back to Search Button
+        document.getElementById('backToSearch').addEventListener('click', function() {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('patient-id').classList.add('active');
+        });
+
+        // Tab Navigation
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const targetTab = this.getAttribute('data-tab');
+                
+                // Update active tab
+                document.querySelectorAll('.tab').forEach(t => {
+                    t.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Update active tab content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(targetTab).classList.add('active');
+            });
+        });
+
+        // Load patient data function
+        function loadPatientData(patientId) {
+            const patient = patientDatabase[patientId];
+            
+            if (!patient) {
+                alert('Patient data not found');
+                return;
+            }
+            
+            // Update patient header
+            document.getElementById('patientPhoto').src = patient.photo;
+            document.getElementById('patientName').textContent = patient.name;
+            document.getElementById('displayPatientId').textContent = patientId;
+            
+            // Update overview tab
+            document.getElementById('patientDob').textContent = patient.dob;
+            document.getElementById('patientGender').textContent = patient.gender;
+            document.getElementById('patientBloodType').textContent = patient.bloodType;
+            document.getElementById('patientPhysician').textContent = patient.physician;
+            document.getElementById('patientLastVisit').textContent = patient.lastVisit;
+            document.getElementById('patientNextAppointment').textContent = patient.nextAppointment;
+            document.getElementById('patientCondition').textContent = patient.condition;
+            document.getElementById('patientAllergies').textContent = patient.allergies;
+            document.getElementById('patientSmoking').textContent = patient.smoking;
+            document.getElementById('patientAlcohol').textContent = patient.alcohol;
+            
+            // Update medical history tab
+            const medicalHistoryTable = document.getElementById('medicalHistoryTable').querySelector('tbody');
+            medicalHistoryTable.innerHTML = '';
+            patient.medicalHistory.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${record.date}</td>
+                    <td>${record.condition}</td>
+                    <td>${record.diagnosis}</td>
+                    <td>${record.treatment}</td>
+                    <td><span class="status-badge status-${record.status}">${record.status.charAt(0).toUpperCase() + record.status.slice(1)}</span></td>
+                `;
+                medicalHistoryTable.appendChild(row);
+            });
+            
+            // Update medications tab
+            const medicationsTable = document.getElementById('medicationsTable').querySelector('tbody');
+            medicationsTable.innerHTML = '';
+            patient.medications.forEach(med => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${med.name}</td>
+                    <td>${med.dosage}</td>
+                    <td>${med.frequency}</td>
+                    <td>${med.prescribed}</td>
+                    <td>${med.physician}</td>
+                `;
+                medicationsTable.appendChild(row);
+            });
+            
+            // Update medication allergies
+            const medicationAllergiesList = document.getElementById('medicationAllergies');
+            medicationAllergiesList.innerHTML = '';
+            patient.medicationAllergies.forEach(allergy => {
+                const item = document.createElement('li');
+                item.textContent = allergy;
+                medicationAllergiesList.appendChild(item);
+            });
+            
+            // Update lab results tab
+            const labResultsTable = document.getElementById('labResultsTable').querySelector('tbody');
+            labResultsTable.innerHTML = '';
+            patient.labResults.forEach(lab => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${lab.test}</td>
+                    <td>${lab.result}</td>
+                    <td>${lab.range}</td>
+                    <td>${lab.date}</td>
+                    <td><span class="status-badge status-${lab.status}">${lab.status.charAt(0).toUpperCase() + lab.status.slice(1)}</span></td>
+                `;
+                labResultsTable.appendChild(row);
+            });
+            
+            // Update appointments tab
+            const upcomingAppointmentsTable = document.getElementById('upcomingAppointmentsTable').querySelector('tbody');
+            upcomingAppointmentsTable.innerHTML = '';
+            patient.upcomingAppointments.forEach(appt => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${appt.date}</td>
+                    <td>${appt.time}</td>
+                    <td>${appt.provider}</td>
+                    <td>${appt.department}</td>
+                    <td>${appt.reason}</td>
+                `;
+                upcomingAppointmentsTable.appendChild(row);
+            });
+            
+            const pastAppointmentsTable = document.getElementById('pastAppointmentsTable').querySelector('tbody');
+            pastAppointmentsTable.innerHTML = '';
+            patient.pastAppointments.forEach(appt => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${appt.date}</td>
+                    <td>${appt.provider}</td>
+                    <td>${appt.department}</td>
+                    <td>${appt.reason}</td>
+                `;
+                pastAppointmentsTable.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>
