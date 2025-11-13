@@ -8,7 +8,9 @@ This project implements a reversible data hiding technique leveraging histogram-
 
 | Name           | Register Number  |
 |----------------|------------------|
-| *[Vishnu Priya A]*| *[23MIA1044]*|
+| *Vishnu Priya A*| *23MIA1039*|
+| *Praveshika M*| *23MIA1044*|
+| *Tarlana Vidya*| *23MIA1176*|
 
 ## Base Paper Reference
 
