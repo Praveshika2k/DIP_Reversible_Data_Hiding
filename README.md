@@ -68,7 +68,8 @@ The system takes **real-time user-provided images** as input. These images serve
 ---
 
 ## 📊 Output Results / Screenshots
-*<img width="1786" height="1194" alt="image" src="https://github.com/user-attachments/assets/35e4bb0a-4c15-4851-a051-cf29dc76d8c5" />*  
+<img width="1036" height="685" alt="image" src="https://github.com/user-attachments/assets/204f944c-0c6d-4ef1-b0e9-3d1c338fd07d" />
+<img width="1354" height="687" alt="image" src="https://github.com/user-attachments/assets/f16c5872-b382-490c-8eb4-b7ddee3665bb" />
 <img width="1389" height="989" alt="image" src="https://github.com/user-attachments/assets/8b66bf99-9aa0-4bc0-986f-9991b5a5ce01" />
 
 Detailed Comparison Table
